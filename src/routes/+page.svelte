@@ -7,16 +7,21 @@
     initial: "RED",
     states: {
       RED: {
+        context: {
+          feedback: "Some feedback",
+          rating: 5,
+          // other properties
+        },
         on: { toggle: "GREEN" },
-        after: { 2000: 'GREEN' },
+        after: { 2000: "GREEN" },
       },
       GREEN: {
         on: { toggle: "YELLOW" },
-        after: { 2000: 'YELLOW' },
+        after: { 2000: "YELLOW" },
       },
       YELLOW: {
         on: { toggle: "RED" },
-        after: { 2000: 'RED' },
+        after: { 2000: "RED" },
       },
     },
   });
@@ -25,8 +30,8 @@
 
   // Subscribe to snapshots (emitted state changes) from the actor
   service.subscribe((snapshot) => {
-    currentState = snapshot.value
-    console.log("Value:", snapshot.value);
+    currentState = snapshot.value;
+    console.log("Value:", snapshot);
   });
 
   service.start();
@@ -45,8 +50,9 @@
 <style>
   button {
     margin-top: 20px;
-    padding: 10px 20px;
+    padding: 5px 20px;
     font-size: 16px;
     cursor: pointer;
+    border-radius: 4px;
   }
 </style>
