@@ -70,25 +70,23 @@
     });
 </script>
 
-<div>
-    <p>Состояние: {currentState}</p>
-    <p>Счетчик: {count}</p>
-    <p>Текст: {input || "_"}</p>
+<p>Состояние: {currentState}</p>
+<p>Счетчик: {count}</p>
+<p>Текст: {input || "_"}</p>
 
-    <div class="flex w-full items-center gap-1">
-        <Button variant="secondary" on:click={toggleState}>
-            {currentState === "inactive" ? "Активировать" : "Деактивировать"}
-        </Button>
-        {#if currentState === "active"}
-            <Button variant="secondary" on:click={increment}>Увеличить</Button>
-            <Input
+<div class="flex gap-1">
+    <Button variant="secondary" on:click={toggleState}>
+        {currentState === "inactive" ? "Активировать" : "Деактивировать"}
+    </Button>
+    {#if currentState === "active"}
+        <Button variant="secondary" on:click={increment}>Увеличить</Button>
+        <Input
             class="max-w-40"
-                type="text"
-                placeholder="_"
-                value={input}
-                on:input={(event) => updateInput(event.target.value)}
-            />
-            <Button variant="secondary" on:click={clearInput}>Очистить</Button>
-        {/if}
-    </div>
+            type="text"
+            placeholder="_"
+            value={input}
+            on:input={(event) => updateInput(event.target.value)}
+        />
+        <Button variant="secondary" on:click={clearInput}>Очистить</Button>
+    {/if}
 </div>

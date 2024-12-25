@@ -34,11 +34,10 @@
     console.log("Value:", snapshot);
   });
 
-  
   function toggleLight() {
     service.send({ type: "toggle" });
   }
-  
+
   onMount(() => {
     service.start();
   });
@@ -47,12 +46,10 @@
   });
 </script>
 
-<div style="text-align: center;">
-  <p>Состояние света: {currentState}</p>
-  <button on:click={toggleLight} style={`background-color: ${currentState}`}>
-    {currentState}
-  </button>
-</div>
+<p>Состояние света: {currentState}</p>
+<button on:click={toggleLight} style={`background-color: ${currentState}`}>
+  {currentState}
+</button>
 
 <style>
   button {

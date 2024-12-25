@@ -39,5 +39,6 @@
 
 
 
-
+<main class="flex flex-col gap-2 w-full items-center">
 {@render children()}
+</main>
