@@ -1,4 +1,5 @@
 <script>
+    import { onMount, onDestroy } from "svelte";
     import { createMachine, assign, interpret } from "xstate";
 
     const machineWithContext = createMachine({
@@ -20,7 +21,7 @@
                     },
                     INPUT: {
                         actions: assign({
-                            input: ({event}) => event.data, // Использование данных из события
+                            input: ({ event }) => event.data, // Использование данных из события
                         }),
                     },
                     DEACTIVATE: "inactive",
@@ -39,7 +40,6 @@
         count = snapshot.context.count;
         input = snapshot.context.input;
     });
-    service.start();
 
     function increment() {
         service.send({ type: "INCREMENT" });
@@ -53,9 +53,16 @@
 
     // Пример функции для отправки данных в машину
     function updateInput(newData) {
-        console.log(newData)
+        console.log(newData);
         service.send({ type: "INPUT", data: newData });
     }
+
+    onMount(() => {
+        service.start();
+    });
+    onDestroy(() => {
+        service.stop();
+    });
 </script>
 
 <div>
@@ -67,6 +74,10 @@
     </button>
     {#if currentState === "active"}
         <button on:click={increment}>Увеличить</button>
-        <input type="text" value={input} on:input={(event) => updateInput(event.target.value)}/>
+        <input
+            type="text"
+            value={input}
+            on:input={(event) => updateInput(event.target.value)}
+        />
     {/if}
 </div>

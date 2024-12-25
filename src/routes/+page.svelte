@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { createMachine, createActor, interpret } from "xstate";
 
   const lightSwitchMachine = createMachine({
@@ -34,10 +34,17 @@
     console.log("Value:", snapshot);
   });
 
-  service.start();
+  
   function toggleLight() {
     service.send({ type: "toggle" });
   }
+  
+  onMount(() => {
+    service.start();
+  });
+  onDestroy(() => {
+    service.stop();
+  });
 </script>
 
 <div style="text-align: center;">
