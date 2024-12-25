@@ -7,7 +7,7 @@
 		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
-		"serve": "serve dist -l 0.0.0.0:5173"
+		"serve": "serve dist --listen http://0.0.0.0:5173"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
