@@ -4,7 +4,7 @@
 	import { ModeWatcher, toggleMode } from "mode-watcher";
 	import { Icon } from "svelte-icons-pack";
 	import { CiDark } from "svelte-icons-pack/ci";
-	import { CiBrightnessUp } from "svelte-icons-pack/ci";
+	import { CiLight } from "svelte-icons-pack/ci";
 	import { Button } from "$lib/components/ui/button/index.js";
 	import * as Menubar from "$lib/components/ui/menubar/index.js";
 
@@ -20,13 +20,16 @@
 			<Menubar.Item>
 				<a href="/counter">counter</a>
 			</Menubar.Item>
+            <Menubar.Item>
+				<a href="/dashboard">dashboard</a>
+			</Menubar.Item>
 		</Menubar.Menu>
 	</Menubar.Root>
 	
 	
 	<Button on:click={toggleMode} variant="outline" size="icon">
 		<Icon
-			src={CiBrightnessUp}
+			src={CiLight}
 			className="h-[1.2rem] w-[1.2rem] dark:-rotate-90 dark:hidden"
 		/>
 		<Icon
