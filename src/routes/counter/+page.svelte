@@ -3,6 +3,8 @@
     import { createMachine, assign, interpret } from "xstate";
     import { Button } from "$lib/components/ui/button";
     import { Input } from "$lib/components/ui/input";
+    import * as Card from "$lib/components/ui/card/index.js";
+    import { Progress } from "$lib/components/ui/progress/index.js";
 
     const machineWithContext = createMachine({
         initial: "inactive",
@@ -70,23 +72,52 @@
     });
 </script>
 
-<p>Состояние: {currentState}</p>
-<p>Счетчик: {count}</p>
-<p>Текст: {input || "_"}</p>
+<div class="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
 
-<div class="flex gap-1">
-    <Button variant="secondary" on:click={toggleState}>
-        {currentState === "inactive" ? "Активировать" : "Деактивировать"}
-    </Button>
-    {#if currentState === "active"}
-        <Button variant="secondary" on:click={increment}>Увеличить</Button>
-        <Input
-            class="max-w-40"
-            type="text"
-            placeholder="_"
-            value={input}
-            on:input={(event) => updateInput(event.target.value)}
-        />
-        <Button variant="secondary" on:click={clearInput}>Очистить</Button>
-    {/if}
-</div>
+        <Card.Root class="sm:col-span-3">
+            <Card.Header class="pb-3">
+                <Card.Title>Состояние</Card.Title>
+                <Card.Description class="max-w-lg text-balance leading-relaxed">
+                    <p>{currentState}</p>
+                    <p>Текст: {input || "_"}</p>
+
+                    <p>{count}%</p>
+                </Card.Description>
+            </Card.Header>
+            <Card.Content>
+                <div class="text-muted-foreground text-xs">
+                    {count}% заполнения
+                </div>
+                <Button variant="secondary" on:click={toggleState}>
+                    {currentState === "inactive"
+                        ? "Активировать"
+                        : "Деактивировать"}
+                </Button>
+            </Card.Content>
+            <Card.Footer>
+                <Progress value={count} aria-label={`${count}% increase`} />
+            </Card.Footer>
+        </Card.Root>
+
+        {#if currentState === "active"}
+            <Card.Root>
+                <Card.Header class="pb-2">
+                    <Card.Description>Настройки</Card.Description>
+                </Card.Header>
+                <Card.Content сlass="flex gap-4 flex-col">
+                    <Button variant="secondary" on:click={increment} >Увеличить</Button >
+                    <Input
+                        class="max-w-40"
+                        type="text"
+                        placeholder="_"
+                        value={input}
+                        on:input={(event) => updateInput(event.target.value)}
+                    />
+                    <Button variant="secondary" on:click={clearInput}>Очистить</Button>
+                </Card.Content>
+                <Card.Footer>
+                    <Progress value={12} aria-label="12% increase" />
+                </Card.Footer>
+            </Card.Root>
+        {/if}
+    </div>
