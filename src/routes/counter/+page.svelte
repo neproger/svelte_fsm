@@ -1,47 +1,45 @@
 <script>
-    import { createMachine, interpret } from "xstate";
+    import { createMachine, assign, interpret } from "xstate";
 
-    const machineWithContext = createMachine(
-        {
-            initial: "inactive",
-            context: {
-                count: 0,
+    const machineWithContext = createMachine({
+        initial: "inactive",
+        context: {
+            count: 0,
+            input: "",
+        },
+        states: {
+            inactive: {
+                on: { ACTIVATE: "active" },
             },
-            states: {
-                inactive: {
-                    on: { ACTIVATE: "active" },
-                },
-                active: {
-                    on: {
-                        INCREMENT: { actions: "incrementCount" },
-                        DEACTIVATE: "inactive",
+            active: {
+                on: {
+                    INCREMENT: {
+                        actions: assign({
+                            count: ({ context }) => context.count + 1, // Обновление контекста
+                        }),
                     },
-                    entry: [
-                        // Inline action
-                        ({ context, event }) => {
-                            console.log(/* ... */);
-                        },
-                    ],
+                    INPUT: {
+                        actions: assign({
+                            input: ({event}) => event.data, // Использование данных из события
+                        }),
+                    },
+                    DEACTIVATE: "inactive",
                 },
             },
         },
-        {
-            actions: {
-                incrementCount: (context) => {
-                    context.count += 1; // Обновляем контекст
-                },
-            },
-        },
-    );
+    });
+    let service = interpret(machineWithContext);
 
-    let service = interpret(machineWithContext).start();
     let currentState = "";
     let count = 0;
+    let input = "";
 
     service.subscribe((snapshot) => {
         currentState = snapshot.value;
         count = snapshot.context.count;
+        input = snapshot.context.input;
     });
+    service.start();
 
     function increment() {
         service.send({ type: "INCREMENT" });
@@ -52,15 +50,23 @@
             type: currentState === "inactive" ? "ACTIVATE" : "DEACTIVATE",
         });
     }
+
+    // Пример функции для отправки данных в машину
+    function updateInput(newData) {
+        console.log(newData)
+        service.send({ type: "INPUT", data: newData });
+    }
 </script>
 
 <div>
     <p>Состояние: {currentState}</p>
     <p>Счетчик: {count}</p>
+    <p>Текст: {input}</p>
     <button on:click={toggleState}>
         {currentState === "inactive" ? "Активировать" : "Деактивировать"}
     </button>
     {#if currentState === "active"}
         <button on:click={increment}>Увеличить</button>
+        <input type="text" value={input} on:input={(event) => updateInput(event.target.value)}/>
     {/if}
 </div>
