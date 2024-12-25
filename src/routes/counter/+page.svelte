@@ -1,6 +1,8 @@
 <script>
     import { onMount, onDestroy } from "svelte";
     import { createMachine, assign, interpret } from "xstate";
+    import { Button } from "$lib/components/ui/button";
+    import { Input } from "$lib/components/ui/input";
 
     const machineWithContext = createMachine({
         initial: "inactive",
@@ -53,8 +55,11 @@
 
     // Пример функции для отправки данных в машину
     function updateInput(newData) {
-        console.log(newData);
         service.send({ type: "INPUT", data: newData });
+    }
+
+    function clearInput() {
+        service.send({ type: "INPUT", data: "" });
     }
 
     onMount(() => {
@@ -68,16 +73,22 @@
 <div>
     <p>Состояние: {currentState}</p>
     <p>Счетчик: {count}</p>
-    <p>Текст: {input}</p>
-    <button on:click={toggleState}>
-        {currentState === "inactive" ? "Активировать" : "Деактивировать"}
-    </button>
-    {#if currentState === "active"}
-        <button on:click={increment}>Увеличить</button>
-        <input
-            type="text"
-            value={input}
-            on:input={(event) => updateInput(event.target.value)}
-        />
-    {/if}
+    <p>Текст: {input || "_"}</p>
+
+    <div class="flex w-full items-center gap-1">
+        <Button variant="secondary" on:click={toggleState}>
+            {currentState === "inactive" ? "Активировать" : "Деактивировать"}
+        </Button>
+        {#if currentState === "active"}
+            <Button variant="secondary" on:click={increment}>Увеличить</Button>
+            <Input
+            class="max-w-40"
+                type="text"
+                placeholder="_"
+                value={input}
+                on:input={(event) => updateInput(event.target.value)}
+            />
+            <Button variant="secondary" on:click={clearInput}>Очистить</Button>
+        {/if}
+    </div>
 </div>
