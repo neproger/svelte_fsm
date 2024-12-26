@@ -8,6 +8,7 @@
     import UsersRound from "lucide-svelte/icons/users-round";
     import ChartLine from "lucide-svelte/icons/chart-line";
     let { currentPath } = $props();
+    console.log(currentPath)
 </script>
 
 <!-- <a
@@ -19,9 +20,14 @@
 </a> -->
 <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder>
-        <ActionButton isActive={currentPath === "/"} builder url="/" isMobile={false}>
+        <ActionButton
+            isActive={currentPath === "/"}
+            builder
+            url="/"
+            isMobile={false}
+        >
             <House class="h-5 w-5" />
-            <span class="sm:not-sr-only">Home</span>
+            <span class="not-sr-only sm:sr-only">Home</span>
         </ActionButton>
     </Tooltip.Trigger>
     <Tooltip.Content side="right">Home</Tooltip.Content>
@@ -34,7 +40,7 @@
             url="/counter"
         >
             <ShoppingCart class="h-5 w-5" />
-            <span class="sr-only">Counter</span>
+            <span class="not-sr-only sm:sr-only">Counter</span>
         </ActionButton>
     </Tooltip.Trigger>
     <Tooltip.Content side="right">Counter</Tooltip.Content>
@@ -47,36 +53,26 @@
             url="/dashboard"
         >
             <Package class="h-5 w-5" />
-            <span class="sr-only">Dashboard</span>
+            <span class="not-sr-only sm:sr-only">Dashboard</span>
         </ActionButton>
     </Tooltip.Trigger>
     <Tooltip.Content side="right">Dashboard</Tooltip.Content>
 </Tooltip.Root>
 <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder>
-        <a
-            href="##"
-            class="text-muted-foreground hover:text-foreground flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8"
-            use:builder.action
-            {...builder}
-        >
+        <ActionButton isActive={currentPath === "/#"} builder url="##">
             <UsersRound class="h-5 w-5" />
-            <span class="sr-only">Customers</span>
-        </a>
+            <span class="not-sr-only sm:sr-only">Customers</span>
+        </ActionButton>
     </Tooltip.Trigger>
     <Tooltip.Content side="right">Customers</Tooltip.Content>
 </Tooltip.Root>
 <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder>
-        <a
-            href="##"
-            class="text-muted-foreground hover:text-foreground flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8"
-            use:builder.action
-            {...builder}
-        >
+        <ActionButton isActive={currentPath === "/#"} builder url="##">
             <ChartLine class="h-5 w-5" />
-            <span class="sr-only">Analytics</span>
-        </a>
+            <span class="not-sr-only sm:sr-only">Analytics</span>
+        </ActionButton>
     </Tooltip.Trigger>
     <Tooltip.Content side="right">Analytics</Tooltip.Content>
 </Tooltip.Root>

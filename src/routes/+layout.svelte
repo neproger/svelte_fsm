@@ -45,7 +45,7 @@
         class="bg-background fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r sm:flex"
     >
         <nav class="flex flex-col items-center gap-4 px-2 sm:py-5">
-           <MainMenu currentPath/>
+           <MainMenu currentPath={currentPath}/>
         </nav>
         <nav class="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
             <Tooltip.Root>
@@ -97,7 +97,7 @@
                     </Button>
                 </Sheet.Trigger>
                 <Sheet.Content side="left" class="sm:max-w-xs">
-                    <MainMenu currentPath/>
+                    <MainMenu currentPath={currentPath}/>
                 </Sheet.Content>
             </Sheet.Root>
             <Breadcrumb.Root class="hidden md:flex">
