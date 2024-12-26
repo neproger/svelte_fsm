@@ -19,101 +19,51 @@
     import PanelLeft from "lucide-svelte/icons/panel-left";
     import Search from "lucide-svelte/icons/search";
 
+    
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import * as Sheet from "$lib/components/ui/sheet/index.js";
     let { children } = $props();
+
+    import { onNavigate } from "$app/navigation";
+    import { page } from "$app/stores";
+    import MainMenu from "$lib/components/ui/MainMenu.svelte";
+
+    let currentPath = $state($page.url.pathname);
+
+    onNavigate(({ to }) => {
+        // Коллбэк вызывается перед навигацией
+        currentPath = to.url.pathname;
+        console.log("Navigating to:", currentPath);
+    });
 </script>
 
 <ModeWatcher />
-
 
 <div class="bg-muted/40 flex min-h-screen w-full flex-col">
     <aside
         class="bg-background fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r sm:flex"
     >
         <nav class="flex flex-col items-center gap-4 px-2 sm:py-5">
-            <a
-                href="##"
-                class="bg-primary text-primary-foreground group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold md:h-8 md:w-8 md:text-base"
-            >
-                <Package2
-                    class="h-4 w-4 transition-all group-hover:scale-110"
-                />
-                <span class="sr-only">Acme Inc</span>
-            </a>
-            <Tooltip.Root>
-                <Tooltip.Trigger asChild let:builder>
-                    <a
-                        href="##"
-                        class="text-muted-foreground hover:text-foreground flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8"
-                        use:builder.action
-                        {...builder}
-                    >
-                        <House class="h-5 w-5" />
-                        <span class="sr-only">Dashboard</span>
-                    </a>
-                </Tooltip.Trigger>
-                <Tooltip.Content side="right">Dashboard</Tooltip.Content>
-            </Tooltip.Root>
-            <Tooltip.Root>
-                <Tooltip.Trigger asChild let:builder>
-                    <a
-                        href="##"
-                        class="bg-accent text-accent-foreground hover:text-foreground flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8"
-                        use:builder.action
-                        {...builder}
-                    >
-                        <ShoppingCart class="h-5 w-5" />
-                        <span class="sr-only">Orders</span>
-                    </a>
-                </Tooltip.Trigger>
-                <Tooltip.Content side="right">Orders</Tooltip.Content>
-            </Tooltip.Root>
-            <Tooltip.Root>
-                <Tooltip.Trigger asChild let:builder>
-                    <a
-                        href="##"
-                        class="text-muted-foreground hover:text-foreground flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8"
-                        use:builder.action
-                        {...builder}
-                    >
-                        <Package class="h-5 w-5" />
-                        <span class="sr-only">Products</span>
-                    </a>
-                </Tooltip.Trigger>
-                <Tooltip.Content side="right">Products</Tooltip.Content>
-            </Tooltip.Root>
-            <Tooltip.Root>
-                <Tooltip.Trigger asChild let:builder>
-                    <a
-                        href="##"
-                        class="text-muted-foreground hover:text-foreground flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8"
-                        use:builder.action
-                        {...builder}
-                    >
-                        <UsersRound class="h-5 w-5" />
-                        <span class="sr-only">Customers</span>
-                    </a>
-                </Tooltip.Trigger>
-                <Tooltip.Content side="right">Customers</Tooltip.Content>
-            </Tooltip.Root>
-            <Tooltip.Root>
-                <Tooltip.Trigger asChild let:builder>
-                    <a
-                        href="##"
-                        class="text-muted-foreground hover:text-foreground flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8"
-                        use:builder.action
-                        {...builder}
-                    >
-                        <ChartLine class="h-5 w-5" />
-                        <span class="sr-only">Analytics</span>
-                    </a>
-                </Tooltip.Trigger>
-                <Tooltip.Content side="right">Analytics</Tooltip.Content>
-            </Tooltip.Root>
+           <MainMenu currentPath/>
         </nav>
         <nav class="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+            <Tooltip.Root>
+                <Tooltip.Trigger on:click={toggleMode}>
+                    <button onclick={toggleMode} >
+                        <Icon
+                            src={CiLight}
+                            className="h-[1.2rem] w-[1.2rem] dark:-rotate-90 dark:hidden"
+                        />
+                        <Icon
+                            src={CiDark}
+                            className="h-[1.2rem] w-[1.2rem] dark:rotate-0 dark:block hidden"
+                        />
+                        <span class="sr-only">Toggle theme</span>
+                    </button>
+                </Tooltip.Trigger>
+            </Tooltip.Root>
+
             <Tooltip.Root>
                 <Tooltip.Trigger asChild let:builder>
                     <a
@@ -131,33 +81,6 @@
         </nav>
     </aside>
     <div class="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <nav class="flex w-full justify-end items-center gap-1 px-4 sm:px-6">
-            <Menubar.Root>
-                <Menubar.Menu>
-                    <Menubar.Item>
-                        <a href="/">home</a>
-                    </Menubar.Item>
-                    <Menubar.Item>
-                        <a href="/counter">counter</a>
-                    </Menubar.Item>
-                    <Menubar.Item>
-                        <a href="/dashboard">dashboard</a>
-                    </Menubar.Item>
-                </Menubar.Menu>
-            </Menubar.Root>
-        
-            <Button on:click={toggleMode} variant="outline" size="icon">
-                <Icon
-                    src={CiLight}
-                    className="h-[1.2rem] w-[1.2rem] dark:-rotate-90 dark:hidden"
-                />
-                <Icon
-                    src={CiDark}
-                    className="h-[1.2rem] w-[1.2rem] dark:rotate-0 dark:block hidden"
-                />
-                <span class="sr-only">Toggle theme</span>
-            </Button>
-        </nav>
         <header
             class="bg-background sticky top-0 z-30 flex h-14 items-center gap-4 border-b px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6"
         >
@@ -174,52 +97,7 @@
                     </Button>
                 </Sheet.Trigger>
                 <Sheet.Content side="left" class="sm:max-w-xs">
-                    <nav class="grid gap-6 text-lg font-medium">
-                        <a
-                            href="##"
-                            class="bg-primary text-primary-foreground group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold md:text-base"
-                        >
-                            <Package2
-                                class="h-5 w-5 transition-all group-hover:scale-110"
-                            />
-                            <span class="sr-only">Acme Inc</span>
-                        </a>
-                        <a
-                            href="##"
-                            class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-                        >
-                            <House class="h-5 w-5" />
-                            Dashboard
-                        </a>
-                        <a
-                            href="##"
-                            class="text-foreground flex items-center gap-4 px-2.5"
-                        >
-                            <ShoppingCart class="h-5 w-5" />
-                            Orders
-                        </a>
-                        <a
-                            href="##"
-                            class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-                        >
-                            <Package class="h-5 w-5" />
-                            Products
-                        </a>
-                        <a
-                            href="##"
-                            class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-                        >
-                            <UsersRound class="h-5 w-5" />
-                            Customers
-                        </a>
-                        <a
-                            href="##"
-                            class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-                        >
-                            <ChartLine class="h-5 w-5" />
-                            Settings
-                        </a>
-                    </nav>
+                    <MainMenu currentPath/>
                 </Sheet.Content>
             </Sheet.Root>
             <Breadcrumb.Root class="hidden md:flex">
