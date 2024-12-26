@@ -40,12 +40,12 @@
     });
     let service = interpret(machineWithContext);
 
-    let currentState = "";
+    let currentState = false;
     let count = 0;
     let input = "";
 
     service.subscribe((snapshot) => {
-        currentState = snapshot.value;
+        currentState = snapshot.value === "active" ? true : false;
         count = snapshot.context.count;
         input = snapshot.context.input;
     });
@@ -56,7 +56,7 @@
 
     function toggleState() {
         service.send({
-            type: currentState === "inactive" ? "ACTIVATE" : "DEACTIVATE",
+            type: currentState ? "DEACTIVATE" : "ACTIVATE",
         });
     }
 
@@ -83,10 +83,9 @@
         <Card.Header class="pb-3">
             <Card.Title>Состояние</Card.Title>
             <Card.Description class="max-w-lg text-balance leading-relaxed">
-                <p>{currentState}</p>
-                <p>Текст: {input || "_"}</p>
+                <p>{currentState ? "Активно" : "Не активно"}</p>
+                Текст: {input || "_"}
 
-                <p>{count}%</p>
             </Card.Description>
         </Card.Header>
         <Card.Content>
@@ -94,9 +93,9 @@
                 {count}% заполнения
             </div>
             <Button variant="secondary" on:click={toggleState}>
-                {currentState === "inactive"
-                    ? "Активировать"
-                    : "Деактивировать"}
+                {currentState
+                    ? "Деактивировать"
+                    : "Активировать"}
             </Button>
         </Card.Content>
         <Card.Footer>
@@ -105,7 +104,7 @@
     </Card.Root>
 </div>
 <div class="grid auto-rows-max items-start gap-4 md:gap-8">
-    {#if currentState === "active"}
+    {#if currentState}
         <Card.Root>
             <Card.Header class="pb-2">
                 <Card.Title>Настроить состояние</Card.Title>

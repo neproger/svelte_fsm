@@ -31,7 +31,7 @@
   // Subscribe to snapshots (emitted state changes) from the actor
   service.subscribe((snapshot) => {
     currentState = snapshot.value;
-    console.log("Value:", snapshot);
+    // console.log("Value:", snapshot);
   });
 
   function toggleLight() {
@@ -46,17 +46,13 @@
   });
 </script>
 
-<p>Состояние света: {currentState}</p>
-<button on:click={toggleLight} style={`background-color: ${currentState}`}>
-  {currentState}
+<button
+  on:click={toggleLight}
+  class="custom-button"
+  style={`background-color: ${currentState}`}
+>
+  Состояние {currentState}
 </button>
 
 <style>
-  button {
-    margin-top: 20px;
-    padding: 5px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
 </style>
