@@ -8,7 +8,7 @@
     import UsersRound from "lucide-svelte/icons/users-round";
     import ChartLine from "lucide-svelte/icons/chart-line";
     let { currentPath } = $props();
-    console.log(currentPath)
+    // console.log(currentPath)
 </script>
 
 <!-- <a

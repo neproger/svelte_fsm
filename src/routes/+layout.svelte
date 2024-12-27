@@ -1,13 +1,6 @@
 <script>
-    import "../app.css";
     import { ModeWatcher, toggleMode } from "mode-watcher";
-    import { Icon } from "svelte-icons-pack";
-    import { CiDark } from "svelte-icons-pack/ci";
-    import { CiLight } from "svelte-icons-pack/ci";
-    import { Button } from "$lib/components/ui/button/index.js";
-    import * as Menubar from "$lib/components/ui/menubar/index.js";
-    import Settings from "lucide-svelte/icons/settings";
-    import * as Tooltip from "$lib/components/ui/tooltip/index.js";
+    import "../app.css";
     import Package2 from "lucide-svelte/icons/package-2";
     import House from "lucide-svelte/icons/house";
     import ShoppingCart from "lucide-svelte/icons/shopping-cart";
@@ -15,11 +8,18 @@
     import UsersRound from "lucide-svelte/icons/users-round";
     import ChartLine from "lucide-svelte/icons/chart-line";
     import { UserRound } from "lucide-svelte";
+    
+    import { Icon } from "svelte-icons-pack";
+    import { CiDark } from "svelte-icons-pack/ci";
+    import { CiLight } from "svelte-icons-pack/ci";
+    import { Button } from "$lib/components/ui/button/index.js";
+    import * as Menubar from "$lib/components/ui/menubar/index.js";
+    import Settings from "lucide-svelte/icons/settings";
+    import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js";
     import PanelLeft from "lucide-svelte/icons/panel-left";
     import Search from "lucide-svelte/icons/search";
 
-    
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import * as Sheet from "$lib/components/ui/sheet/index.js";
@@ -28,14 +28,13 @@
     import { onNavigate } from "$app/navigation";
     import { page } from "$app/stores";
     import MainMenu from "$lib/components/ui/MainMenu.svelte";
+    let isMainMenu = $state(false);
 
     let currentPath = $state($page.url.pathname);
-    let isMainMenu = $state(false);
     onNavigate(({ to }) => {
         isMainMenu = false;
-        // Коллбэк вызывается перед навигацией
         currentPath = to.url.pathname;
-        console.log("Navigating to:", currentPath, isMainMenu);
+        // console.log("Navigating to:", currentPath, isMainMenu);
     });
 </script>
 
