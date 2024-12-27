@@ -30,11 +30,12 @@
     import MainMenu from "$lib/components/ui/MainMenu.svelte";
 
     let currentPath = $state($page.url.pathname);
-
+    let isMainMenu = $state(false);
     onNavigate(({ to }) => {
+        isMainMenu = false;
         // Коллбэк вызывается перед навигацией
         currentPath = to.url.pathname;
-        console.log("Navigating to:", currentPath);
+        console.log("Navigating to:", currentPath, isMainMenu);
     });
 </script>
 
@@ -84,7 +85,7 @@
         <header
             class="bg-background sticky top-0 z-30 flex h-14 items-center gap-4 border-b px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6"
         >
-            <Sheet.Root>
+            <Sheet.Root bind:open={isMainMenu}>
                 <Sheet.Trigger asChild let:builder>
                     <Button
                         builders={[builder]}
